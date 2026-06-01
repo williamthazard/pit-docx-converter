@@ -4,20 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Current state
 
-The app is **not scaffolded yet**. The source of truth is:
+The app is **built and working** (all 11 plan tasks merged to `main`; 28 tests passing). The original design intent lives in:
 
 - `docs/superpowers/specs/2026-06-01-pit-docx-to-canvas-design.md` — the design.
-- `docs/superpowers/plans/2026-06-01-pit-docx-to-canvas.md` — the task-by-task implementation plan (TDD, with complete code for every step).
+- `docs/superpowers/plans/2026-06-01-pit-docx-to-canvas.md` — the task-by-task implementation plan.
 
-Build by following the plan in order. Do not improvise structure that contradicts the spec.
+These are historical records — the code is now the source of truth where they diverge. PIT brand assets (`PIT_logo_blue.png`, `favicon.png`) live in `public/`.
 
 ## What this is
 
 A 100% client-side, PIT-branded React SPA. An instructor drops a `.docx`/`.txt`/`.pdf`; it is converted **entirely in the browser** to clean, Canvas-ready HTML they can copy (as source or rich content) or download. There is no backend and no document is ever uploaded anywhere — it ships as a static site.
 
 ## Commands
-
-(Available once Task 1 of the plan is complete.)
 
 - `npm run dev` — Vite dev server.
 - `npm run build` — `tsc -b && vite build`.
