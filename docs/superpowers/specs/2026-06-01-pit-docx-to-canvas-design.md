@@ -154,14 +154,12 @@ preview below.
   `</>` HTML view.
 - **Copy rich** — writes `text/html` to the clipboard so it pastes formatted into
   Canvas's visual editor.
-- **Download .html** — Blob download named after the source file
-  (`syllabus.docx` → `syllabus.html`). Unlike the two copy actions, the download
-  wraps the canonical fragment in a **minimal valid HTML document**
-  (`<!DOCTYPE html>`, `<meta charset="utf-8">`, a `<title>` from the filename,
-  the content in `<body>`) so the saved file is a complete, standalone,
-  browser-openable document rather than a bare fragment. The copy actions
-  deliberately keep the bare fragment, since Canvas supplies the surrounding
-  page.
+- **Download .html** — Blob download of the canonical fragment, named after the
+  source file (`syllabus.docx` → `syllabus.html`). It's a file copy of the same
+  HTML the copy buttons produce (a backup / hand-off), not a wrapped standalone
+  document — there's no instructor use case for opening it as its own webpage.
+  All three export actions emit the identical fragment, just to different
+  destinations (clipboard text, clipboard rich, file).
 - Each action shows a brief "Copied!" / "Downloaded" confirmation.
 - All actions are disabled until a successful conversion exists.
 
