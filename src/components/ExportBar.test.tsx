@@ -17,9 +17,11 @@ describe('ExportBar', () => {
     expect(screen.getByRole('button', { name: /download/i })).toBeDisabled()
   })
 
-  it('writes the html string to the clipboard on Copy HTML', () => {
+  it('writes the html string to the clipboard on Copy HTML', async () => {
     render(<ExportBar html="<p>hi</p>" fileName="a.docx" />)
     fireEvent.click(screen.getByRole('button', { name: /copy html/i }))
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('<p>hi</p>')
+    // Await the success flash so the async setState settles inside act().
+    expect(await screen.findByText(/copied html source/i)).toBeInTheDocument()
   })
 })
