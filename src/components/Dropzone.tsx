@@ -34,7 +34,11 @@ export function Dropzone({ onFile, fileName }: DropzoneProps) {
         type="file"
         accept={ACCEPTED_EXTENSIONS.join(',')}
         className="hidden"
-        onChange={(e) => handleFiles(e.target.files)}
+        onChange={(e) => {
+          handleFiles(e.target.files)
+          // Reset so re-selecting the same filename still fires a change event.
+          e.target.value = ''
+        }}
       />
       <p className="font-heading text-lg text-pit-blue">
         {fileName ? `Loaded: ${fileName}` : 'Drop a .docx, .txt, or .pdf'}
