@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=Open+Sans:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-heading: 'Arvo', 'Georgia', serif;
+  --font-sans: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  --color-pit-blue: #3161AC;
+  --color-pit-blue-dark: #254d8a;
+  --color-pit-blue-light: #4a7fd4;
+  --color-pit-yellow: #F7CC07;
+  --color-pit-yellow-dark: #d4ad00;
+  --color-pit-grey: #474747;
+  --color-pit-grey-light: #6b6b6b;
+  --color-pit-bg: #f5f6fa;
+  --color-pit-card: #ffffff;
+}
+
+body {
+  margin: 0;
+  background: var(--color-pit-bg);
+  color: var(--color-pit-grey);
+  font-family: var(--font-sans);
+}
