@@ -123,6 +123,11 @@ best-effort convenience, not a primary path.
 ### `cleanHtml()` shared post-pass
 
 Operates on the HTML string / a parsed `DocumentFragment`:
+- **Sanitize with DOMPurify first** — strip `<script>`, inline event handlers,
+  and `javascript:` URLs. This is the security chokepoint: every converter's
+  output flows through here, so the HTML shown in preview *and* pasted into
+  Canvas (and shown to students) cannot carry active content from a crafted
+  source document.
 - Remove empty paragraphs and collapse redundant whitespace.
 - Drop stray `style=""` and `id` attributes mammoth may emit.
 - Ensure output is a tidy fragment with no document wrapper.
