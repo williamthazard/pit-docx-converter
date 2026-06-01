@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface ExportBarProps {
   html: string
@@ -14,22 +14,34 @@ function downloadName(fileName: string | null): string {
 
 export function ExportBar({ html, fileName }: ExportBarProps) {
   const [flash, setFlash] = useState<string | null>(null)
+  const flashTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const disabled = html.trim() === ''
+
+  useEffect(() => () => clearTimeout(flashTimer.current), [])
 
   function announce(msg: string) {
     setFlash(msg)
-    setTimeout(() => setFlash(null), 1500)
+    clearTimeout(flashTimer.current)
+    flashTimer.current = setTimeout(() => setFlash(null), 1500)
   }
 
   async function copyHtml() {
-    await navigator.clipboard.writeText(html)
-    announce('Copied HTML source')
+    try {
+      await navigator.clipboard.writeText(html)
+      announce('Copied HTML source')
+    } catch {
+      announce('Copy failed — check clipboard permissions')
+    }
   }
 
   async function copyRich() {
-    const item = new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }) })
-    await navigator.clipboard.write([item])
-    announce('Copied rich content')
+    try {
+      const item = new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }) })
+      await navigator.clipboard.write([item])
+      announce('Copied rich content')
+    } catch {
+      announce('Copy failed — check clipboard permissions')
+    }
   }
 
   function download() {
