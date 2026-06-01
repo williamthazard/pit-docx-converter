@@ -14,8 +14,19 @@ export function Dropzone({ onFile, fileName }: DropzoneProps) {
     if (files && files.length > 0) onFile(files[0])
   }
 
+  function openPicker() {
+    inputRef.current?.click()
+  }
+
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-label={
+        fileName
+          ? `Loaded ${fileName}. Activate to choose a different file.`
+          : 'Choose or drop a .docx, .txt, or .pdf file to convert'
+      }
       onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
       onDragLeave={() => setDragging(false)}
       onDrop={(e) => {
@@ -23,8 +34,14 @@ export function Dropzone({ onFile, fileName }: DropzoneProps) {
         setDragging(false)
         handleFiles(e.dataTransfer.files)
       }}
-      onClick={() => inputRef.current?.click()}
-      className={`cursor-pointer rounded-xl border-2 border-dashed p-10 text-center transition-colors ${
+      onClick={openPicker}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          openPicker()
+        }
+      }}
+      className={`cursor-pointer rounded-xl border-2 border-dashed p-10 text-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-pit-blue focus-visible:ring-offset-2 ${
         dragging ? 'border-pit-blue bg-pit-blue/5' : 'border-pit-blue/50 bg-pit-card'
       }`}
     >
