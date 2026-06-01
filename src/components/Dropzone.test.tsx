@@ -21,4 +21,16 @@ describe('Dropzone', () => {
     render(<Dropzone onFile={vi.fn()} fileName="syllabus.docx" />)
     expect(screen.getByText(/syllabus\.docx/)).toBeInTheDocument()
   })
+
+  it('is keyboard-focusable and opens the picker on Enter and Space', () => {
+    const clickSpy = vi.spyOn(HTMLInputElement.prototype, 'click').mockImplementation(() => {})
+    render(<Dropzone onFile={vi.fn()} fileName={null} />)
+    const zone = screen.getByRole('button')
+    expect(zone).toHaveAttribute('tabindex', '0')
+    expect(zone).toHaveAccessibleName()
+    fireEvent.keyDown(zone, { key: 'Enter' })
+    fireEvent.keyDown(zone, { key: ' ' })
+    expect(clickSpy).toHaveBeenCalledTimes(2)
+    clickSpy.mockRestore()
+  })
 })

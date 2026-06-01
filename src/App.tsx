@@ -36,8 +36,20 @@ function App() {
 
   return (
     <div className="min-h-screen">
-      <header className="bg-pit-blue px-6 py-4 text-white">
-        <h1 className="font-heading text-xl">PIT · Docx to Canvas</h1>
+      <header className="border-b-4 border-pit-yellow bg-pit-card">
+        <div className="mx-auto flex max-w-6xl items-center gap-4 px-6 py-4">
+          <img
+            src={`${import.meta.env.BASE_URL}PIT_logo_blue.png`}
+            alt="Pennsylvania Institute of Technology"
+            className="h-12 w-auto"
+          />
+          <div className="border-l border-black/10 pl-4">
+            <h1 className="font-heading text-xl text-pit-blue">Docx → Canvas HTML</h1>
+            <p className="text-sm text-pit-grey-light">
+              Turn a Word document into clean HTML for Canvas
+            </p>
+          </div>
+        </div>
       </header>
 
       <main className="mx-auto max-w-6xl p-6">
