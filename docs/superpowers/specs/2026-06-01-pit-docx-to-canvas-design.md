@@ -155,7 +155,13 @@ preview below.
 - **Copy rich** — writes `text/html` to the clipboard so it pastes formatted into
   Canvas's visual editor.
 - **Download .html** — Blob download named after the source file
-  (`syllabus.docx` → `syllabus.html`).
+  (`syllabus.docx` → `syllabus.html`). Unlike the two copy actions, the download
+  wraps the canonical fragment in a **minimal valid HTML document**
+  (`<!DOCTYPE html>`, `<meta charset="utf-8">`, a `<title>` from the filename,
+  the content in `<body>`) so the saved file is a complete, standalone,
+  browser-openable document rather than a bare fragment. The copy actions
+  deliberately keep the bare fragment, since Canvas supplies the surrounding
+  page.
 - Each action shows a brief "Copied!" / "Downloaded" confirmation.
 - All actions are disabled until a successful conversion exists.
 
