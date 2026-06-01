@@ -20,6 +20,11 @@ describe('cleanHtml', () => {
     expect(out.html).toBe('<p>keep</p>')
   })
 
+  it('keeps a <br>-only paragraph (blank line from Word)', () => {
+    const out = cleanHtml('<p>keep</p><p><br></p>')
+    expect(out.html).toContain('<br>')
+  })
+
   it('strips style and id attributes', () => {
     const out = cleanHtml('<p style="color:red" id="x">t</p>')
     expect(out.html).toBe('<p>t</p>')
