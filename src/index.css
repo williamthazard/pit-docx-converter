@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=Open+Sans:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-heading: 'Arvo', 'Georgia', serif;
+  --font-sans: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  --color-pit-blue: #3161AC;
+  --color-pit-blue-dark: #254d8a;
+  --color-pit-blue-light: #4a7fd4;
+  --color-pit-yellow: #F7CC07;
+  --color-pit-yellow-dark: #d4ad00;
+  --color-pit-grey: #474747;
+  --color-pit-grey-light: #6b6b6b;
+  --color-pit-bg: #f5f6fa;
+  --color-pit-card: #ffffff;
+}
+
+body {
+  margin: 0;
+  background: var(--color-pit-bg);
+  color: var(--color-pit-grey);
+  font-family: var(--font-sans);
+}
+
+/*
+ * Tailwind's Preflight resets headings/lists/tables to unstyled. The preview
+ * pane renders raw converted HTML, so re-apply sensible typographic defaults
+ * scoped to .prose-preview only — this affects the preview, never app chrome.
+ */
+.prose-preview {
+  line-height: 1.6;
+  color: var(--color-pit-grey);
+}
+.prose-preview > :first-child { margin-top: 0; }
+.prose-preview h1 {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-pit-blue-dark);
+  margin: 1.2rem 0 0.6rem;
+}
+.prose-preview h2 {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-pit-blue);
+  margin: 1.1rem 0 0.5rem;
+}
+.prose-preview h3 { font-size: 1.1rem; font-weight: 700; margin: 1rem 0 0.4rem; }
+.prose-preview h4 { font-size: 1rem; font-weight: 700; margin: 0.9rem 0 0.4rem; }
+.prose-preview p { margin: 0.6rem 0; }
+.prose-preview a { color: var(--color-pit-blue); text-decoration: underline; }
+.prose-preview ul,
+.prose-preview ol { margin: 0.6rem 0; padding-left: 1.5rem; }
+.prose-preview ul { list-style: disc; }
+.prose-preview ol { list-style: decimal; }
+.prose-preview li { margin: 0.2rem 0; }
+.prose-preview table {
+  border-collapse: collapse;
+  margin: 0.8rem 0;
+  width: 100%;
+}
+.prose-preview th,
+.prose-preview td {
+  border: 1px solid #d7dbe3;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+.prose-preview td > p:only-child { margin: 0; }
