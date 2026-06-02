@@ -35,7 +35,7 @@ export function Dropzone({ onFile, fileName }: DropzoneProps) {
         aria-label={
           fileName
             ? `Loaded ${fileName}. Choose a different file.`
-            : 'Choose or drop a .docx, .txt, or .pdf file to convert'
+            : 'Choose or drop a Word .docx file to convert'
         }
         className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
         onDragOver={(e) => {
@@ -75,8 +75,8 @@ export function Dropzone({ onFile, fileName }: DropzoneProps) {
           </>
         ) : (
           <>
-            <p className="font-heading text-lg text-pit-ink">Drop a document here</p>
-            <p className="mt-1 text-sm text-pit-grey-light">or click to choose a file</p>
+            <p className="font-heading text-lg text-pit-ink">Drop a Word document here</p>
+            <p className="mt-1 text-sm text-pit-grey-light">or click to choose a .docx file</p>
             <div className="mt-4 flex items-center justify-center gap-2">
               {ACCEPTED_EXTENSIONS.map((ext) => (
                 <span

@@ -6,17 +6,6 @@ export interface CleanResult {
 }
 
 /**
- * Escape the HTML-significant characters for use in TEXT NODE content only.
- * Does not escape `"`/`'`, so do not use this to build attribute values.
- */
-export function escapeHtml(input: string): string {
-  return input
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-}
-
-/**
  * Post-process a converted HTML fragment. First sanitize with DOMPurify
  * (drops <script>, inline event handlers, javascript: URLs, etc.) — this is
  * the security chokepoint for everything shown in preview and pasted into

@@ -1,22 +1,18 @@
-// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
-import { convertFile } from './convert'
+import { convertFile, ACCEPTED_EXTENSIONS } from './convert'
 import { ConversionError } from './types'
 
-function file(name: string, content = 'hello'): File {
-  return new File([content], name, { type: 'text/plain' })
+function file(name: string, content = 'x'): File {
+  return new File([content], name, { type: 'application/octet-stream' })
 }
 
 describe('convertFile dispatch', () => {
-  it('converts .txt content', async () => {
-    const r = await convertFile(file('notes.txt', 'one\n\ntwo'))
-    expect(r.html).toBe('<p>one</p>\n<p>two</p>')
+  it('accepts only .docx', () => {
+    expect(ACCEPTED_EXTENSIONS).toEqual(['.docx'])
   })
 
-  it('rejects .doc with export guidance', async () => {
-    await expect(convertFile(file('old.doc'))).rejects.toMatchObject({
-      name: 'ConversionError',
-    })
+  it('rejects .doc with guidance to save as .docx', async () => {
+    await expect(convertFile(file('old.doc'))).rejects.toBeInstanceOf(ConversionError)
     try {
       await convertFile(file('old.doc'))
     } catch (e) {
@@ -24,10 +20,13 @@ describe('convertFile dispatch', () => {
     }
   })
 
-  it('rejects .pages with export guidance', async () => {
-    await expect(convertFile(file('paper.pages'))).rejects.toMatchObject({
-      name: 'ConversionError',
-    })
+  it('rejects .pages', async () => {
+    await expect(convertFile(file('paper.pages'))).rejects.toBeInstanceOf(ConversionError)
+  })
+
+  it('rejects formats we no longer support (.txt, .pdf)', async () => {
+    await expect(convertFile(file('a.txt'))).rejects.toBeInstanceOf(ConversionError)
+    await expect(convertFile(file('a.pdf'))).rejects.toBeInstanceOf(ConversionError)
   })
 
   it('rejects an unknown extension', async () => {

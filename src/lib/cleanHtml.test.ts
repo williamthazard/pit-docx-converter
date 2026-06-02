@@ -1,12 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
-import { cleanHtml, escapeHtml } from './cleanHtml'
-
-describe('escapeHtml', () => {
-  it('escapes the HTML-significant characters', () => {
-    expect(escapeHtml('a < b & c > d')).toBe('a &lt; b &amp; c &gt; d')
-  })
-})
+import { cleanHtml } from './cleanHtml'
 
 describe('cleanHtml', () => {
   it('removes <img> elements and reports the count', () => {
