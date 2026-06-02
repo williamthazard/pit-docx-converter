@@ -22,15 +22,15 @@ describe('Dropzone', () => {
     expect(screen.getByText(/syllabus\.docx/)).toBeInTheDocument()
   })
 
-  it('wraps a keyboard-focusable file input in a label (native click-to-open)', () => {
+  it('renders the file input as a focusable, clickable overlay', () => {
     render(<Dropzone onFile={vi.fn()} fileName={null} />)
     const input = screen.getByTestId('file-input')
-    // The input itself is the control: it has an accessible name, stays in the
-    // tab order, and lives inside a <label> so clicking the zone opens the
-    // native file dialog without any scripted .click().
+    // The input is the real control the user clicks (an invisible overlay):
+    // it has an accessible name, stays in the tab order, and isn't hidden — so
+    // the browser opens the native dialog directly, no scripted .click().
     expect(input).toHaveAccessibleName()
     expect(input).not.toHaveAttribute('aria-hidden')
     expect(input).not.toHaveAttribute('tabindex', '-1')
-    expect(input.closest('label')).not.toBeNull()
+    expect(input).toHaveClass('absolute', 'opacity-0')
   })
 })
