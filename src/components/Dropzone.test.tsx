@@ -22,15 +22,15 @@ describe('Dropzone', () => {
     expect(screen.getByText(/syllabus\.docx/)).toBeInTheDocument()
   })
 
-  it('is keyboard-focusable and opens the picker on Enter and Space', () => {
-    const clickSpy = vi.spyOn(HTMLInputElement.prototype, 'click').mockImplementation(() => {})
+  it('renders the file input as a focusable, clickable overlay', () => {
     render(<Dropzone onFile={vi.fn()} fileName={null} />)
-    const zone = screen.getByRole('button')
-    expect(zone).toHaveAttribute('tabindex', '0')
-    expect(zone).toHaveAccessibleName()
-    fireEvent.keyDown(zone, { key: 'Enter' })
-    fireEvent.keyDown(zone, { key: ' ' })
-    expect(clickSpy).toHaveBeenCalledTimes(2)
-    clickSpy.mockRestore()
+    const input = screen.getByTestId('file-input')
+    // The input is the real control the user clicks (an invisible overlay):
+    // it has an accessible name, stays in the tab order, and isn't hidden — so
+    // the browser opens the native dialog directly, no scripted .click().
+    expect(input).toHaveAccessibleName()
+    expect(input).not.toHaveAttribute('aria-hidden')
+    expect(input).not.toHaveAttribute('tabindex', '-1')
+    expect(input).toHaveClass('absolute', 'opacity-0')
   })
 })

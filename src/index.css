@@ -1,70 +1,183 @@
 @import url('https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=Open+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* Enable class-based dark mode: `dark:` utilities apply under a .dark ancestor. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-heading: 'Arvo', 'Georgia', serif;
   --font-sans: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
   --color-pit-blue: #3161AC;
-  --color-pit-blue-dark: #254d8a;
+  --color-pit-blue-dark: #1f4480;
   --color-pit-blue-light: #4a7fd4;
+  --color-pit-ink: #15294a;
   --color-pit-yellow: #F7CC07;
   --color-pit-yellow-dark: #d4ad00;
-  --color-pit-grey: #474747;
-  --color-pit-grey-light: #6b6b6b;
-  --color-pit-bg: #f5f6fa;
+  --color-pit-grey: #41464f;
+  --color-pit-grey-light: #757b86;
+  --color-pit-bg: #eef1f7;
   --color-pit-card: #ffffff;
+  --color-pit-line: #e2e7f0;
 }
+
+/* ---- Base & atmosphere ------------------------------------------------ */
+html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--color-pit-bg);
+  min-height: 100vh;
   color: var(--color-pit-grey);
   font-family: var(--font-sans);
+  background-color: var(--color-pit-bg);
+  /* Layered glows give the flat institutional palette depth without noise. */
+  background-image:
+    radial-gradient(60rem 60rem at 12% -10%, rgba(49, 97, 172, 0.10), transparent 60%),
+    radial-gradient(48rem 48rem at 100% 0%, rgba(247, 204, 7, 0.10), transparent 55%);
+  background-attachment: fixed;
 }
 
-/*
- * Tailwind's Preflight resets headings/lists/tables to unstyled. The preview
+/* ---- Dark mode -------------------------------------------------------- *
+ * Override the PIT color tokens under .dark; every token-backed utility
+ * (bg-pit-card, text-pit-grey, border-pit-line, …) re-themes automatically.
+ * Brand blue/yellow stay saturated (they back buttons/badges that need
+ * white/dark text); only the neutral scale and blue-light accent shift.
+ */
+.dark {
+  color-scheme: dark;
+  --color-pit-ink: #eef2f9;
+  --color-pit-grey: #c7cedb;
+  --color-pit-grey-light: #8a93a6;
+  --color-pit-blue-light: #93bdf7;
+  --color-pit-yellow-dark: #ffd83a;
+  --color-pit-bg: #0e1626;
+  --color-pit-card: #18223b;
+  --color-pit-line: #2b3954;
+}
+
+.dark body {
+  background-image:
+    radial-gradient(60rem 60rem at 12% -10%, rgba(74, 127, 212, 0.12), transparent 60%),
+    radial-gradient(48rem 48rem at 100% 0%, rgba(247, 204, 7, 0.06), transparent 55%);
+}
+
+/* Lighten the blue used as TEXT in the rendered preview for dark contrast. */
+.dark .prose-preview h2 { color: var(--color-pit-blue-light); }
+.dark .prose-preview a { color: var(--color-pit-blue-light); }
+.dark .prose-preview a:hover { color: #b9d4fb; }
+.dark .prose-preview thead th,
+.dark .prose-preview tr:first-child td {
+  background: color-mix(in srgb, var(--color-pit-blue) 22%, transparent);
+}
+
+/* ---- Motion ----------------------------------------------------------- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@utility animate-fade-up { animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@utility animate-fade-in { animation: fade-in 0.4s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* Small inline spinner for the busy state. */
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid color-mix(in srgb, var(--color-pit-blue) 30%, transparent);
+  border-top-color: var(--color-pit-blue);
+  border-radius: 9999px;
+  animation: spin 0.7s linear infinite;
+}
+
+/* Inline Ionicons rendered by <Icon>: size to 1em and force outline paint in
+ * the current text color (overrides the SVG's own fill/stroke attributes). */
+.pit-icon {
+  display: inline-flex;
+  flex: none;
+  line-height: 0;
+}
+.pit-icon svg {
+  width: 1em;
+  height: 1em;
+  display: block;
+}
+/* Ionicons' JS exports paint via CSS classes (.ionicon-fill-none /
+ * .ionicon-stroke-width) that the <ion-icon> web component supplies. We don't
+ * use that component, so supply the paint ourselves. All Ionicons share a
+ * 0 0 512 512 viewBox, so stroke-width: 32 is the standard outline weight. */
+.pit-icon svg * {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 32px;
+}
+
+/* ---- Rendered preview typography -------------------------------------- *
+ * Tailwind Preflight resets headings/lists/tables to unstyled. The preview
  * pane renders raw converted HTML, so re-apply sensible typographic defaults
  * scoped to .prose-preview only — this affects the preview, never app chrome.
  */
 .prose-preview {
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--color-pit-grey);
+  font-size: 0.975rem;
 }
 .prose-preview > :first-child { margin-top: 0; }
 .prose-preview h1 {
   font-family: var(--font-heading);
   font-size: 1.6rem;
   font-weight: 700;
-  color: var(--color-pit-blue-dark);
-  margin: 1.2rem 0 0.6rem;
+  line-height: 1.2;
+  color: var(--color-pit-ink);
+  margin: 1.3rem 0 0.6rem;
 }
 .prose-preview h2 {
   font-family: var(--font-heading);
   font-size: 1.3rem;
   font-weight: 700;
+  line-height: 1.25;
   color: var(--color-pit-blue);
-  margin: 1.1rem 0 0.5rem;
+  margin: 1.15rem 0 0.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--color-pit-line);
 }
-.prose-preview h3 { font-size: 1.1rem; font-weight: 700; margin: 1rem 0 0.4rem; }
-.prose-preview h4 { font-size: 1rem; font-weight: 700; margin: 0.9rem 0 0.4rem; }
+.prose-preview h3 { font-size: 1.1rem; font-weight: 700; color: var(--color-pit-ink); margin: 1rem 0 0.4rem; }
+.prose-preview h4 { font-size: 1rem; font-weight: 700; color: var(--color-pit-ink); margin: 0.9rem 0 0.4rem; }
 .prose-preview p { margin: 0.6rem 0; }
-.prose-preview a { color: var(--color-pit-blue); text-decoration: underline; }
+.prose-preview a {
+  color: var(--color-pit-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+.prose-preview a:hover { color: var(--color-pit-blue-dark); }
 .prose-preview ul,
 .prose-preview ol { margin: 0.6rem 0; padding-left: 1.5rem; }
 .prose-preview ul { list-style: disc; }
 .prose-preview ol { list-style: decimal; }
-.prose-preview li { margin: 0.2rem 0; }
+.prose-preview li { margin: 0.25rem 0; }
 .prose-preview table {
   border-collapse: collapse;
-  margin: 0.8rem 0;
+  margin: 0.9rem 0;
   width: 100%;
+  font-size: 0.9rem;
 }
+.prose-preview thead th,
+.prose-preview tr:first-child td { background: color-mix(in srgb, var(--color-pit-blue) 8%, white); }
 .prose-preview th,
 .prose-preview td {
-  border: 1px solid #d7dbe3;
-  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--color-pit-line);
+  padding: 0.45rem 0.7rem;
   text-align: left;
   vertical-align: top;
 }
