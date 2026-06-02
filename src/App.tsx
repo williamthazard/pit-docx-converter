@@ -41,13 +41,15 @@ function App() {
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 border-b border-white/15 bg-pit-blue/90 shadow-md backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-6 py-3.5">
-          <img
-            src={`${import.meta.env.BASE_URL}PIT_logo_blue.png`}
-            alt="Pennsylvania Institute of Technology"
-            className="h-10 w-auto object-contain drop-shadow-md"
-            // Turn the dark-blue logo pure white so it reads on the blue bar.
-            style={{ filter: 'brightness(0) invert(1)' }}
-          />
+          <a href="https://pit.edu" target="_blank" rel="noopener noreferrer">
+            <img
+              src={`${import.meta.env.BASE_URL}PIT_logo_blue.png`}
+              alt="Pennsylvania Institute of Technology"
+              className="h-10 w-auto object-contain drop-shadow-md"
+              // Turn the dark-blue logo pure white so it reads on the blue bar.
+              style={{ filter: 'brightness(0) invert(1)' }}
+            />
+          </a>
           <div className="border-l border-white/25 pl-3">
             <h1 className="font-heading text-xl leading-tight text-white">
               Docx <span className="text-pit-yellow">→</span> HTML
