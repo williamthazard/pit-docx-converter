@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import { Icon } from './Icon'
+import { codeSlashOutline, clipboardOutline, downloadOutline, checkmarkOutline } from '../icons'
 
 interface ExportBarProps {
   html: string
@@ -63,23 +65,23 @@ export function ExportBar({ html, fileName }: ExportBarProps) {
       <button
         onClick={copyHtml}
         disabled={disabled}
-        className={`${btn} bg-pit-yellow text-pit-ink shadow-sm enabled:hover:bg-pit-yellow-dark enabled:hover:shadow`}
+        className={`${btn} bg-pit-yellow text-[#15294a] shadow-sm enabled:hover:bg-pit-yellow-dark enabled:hover:shadow`}
       >
-        <ion-icon name="code-slash-outline" className="text-lg" aria-hidden="true" /> Copy HTML
+        <Icon icon={codeSlashOutline} className="text-lg" /> Copy HTML
       </button>
       <button
         onClick={copyRich}
         disabled={disabled}
         className={`${btn} bg-pit-blue text-white shadow-sm enabled:hover:bg-pit-blue-dark enabled:hover:shadow`}
       >
-        <ion-icon name="clipboard-outline" className="text-lg" aria-hidden="true" /> Copy rich
+        <Icon icon={clipboardOutline} className="text-lg" /> Copy rich
       </button>
       <button
         onClick={download}
         disabled={disabled}
-        className={`${btn} border border-pit-blue/40 bg-white text-pit-blue enabled:hover:border-pit-blue enabled:hover:bg-pit-blue/[0.04]`}
+        className={`${btn} border border-pit-blue/40 bg-pit-card text-pit-blue enabled:hover:border-pit-blue enabled:hover:bg-pit-blue/[0.06] dark:text-pit-blue-light`}
       >
-        <ion-icon name="download-outline" className="text-lg" aria-hidden="true" /> Download .html
+        <Icon icon={downloadOutline} className="text-lg" /> Download .html
       </button>
       <span
         aria-live="polite"
@@ -87,7 +89,7 @@ export function ExportBar({ html, fileName }: ExportBarProps) {
           flash ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        {flash && <ion-icon name="checkmark-outline" className="text-sm" aria-hidden="true" />}
+        {flash && <Icon icon={checkmarkOutline} className="text-sm" />}
         {flash}
       </span>
     </div>

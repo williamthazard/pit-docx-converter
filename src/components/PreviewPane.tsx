@@ -39,7 +39,7 @@ export function PreviewPane({ html }: PreviewPaneProps) {
             dangerouslySetInnerHTML={{ __html: html }}
           />
         ) : (
-          <pre className="overflow-auto rounded-lg bg-pit-ink/[0.03] p-4 font-mono text-[0.8rem] leading-relaxed break-words whitespace-pre-wrap text-pit-grey">
+          <pre className="overflow-auto rounded-lg bg-pit-bg p-4 font-mono text-[0.8rem] leading-relaxed break-words whitespace-pre-wrap text-pit-grey">
             {html}
           </pre>
         )}

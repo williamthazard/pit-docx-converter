@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=Open+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* Enable class-based dark mode: `dark:` utilities apply under a .dark ancestor. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-heading: 'Arvo', 'Georgia', serif;
   --font-sans: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -34,6 +37,39 @@ body {
   background-attachment: fixed;
 }
 
+/* ---- Dark mode -------------------------------------------------------- *
+ * Override the PIT color tokens under .dark; every token-backed utility
+ * (bg-pit-card, text-pit-grey, border-pit-line, …) re-themes automatically.
+ * Brand blue/yellow stay saturated (they back buttons/badges that need
+ * white/dark text); only the neutral scale and blue-light accent shift.
+ */
+.dark {
+  color-scheme: dark;
+  --color-pit-ink: #eef2f9;
+  --color-pit-grey: #c7cedb;
+  --color-pit-grey-light: #8a93a6;
+  --color-pit-blue-light: #93bdf7;
+  --color-pit-yellow-dark: #ffd83a;
+  --color-pit-bg: #0e1626;
+  --color-pit-card: #18223b;
+  --color-pit-line: #2b3954;
+}
+
+.dark body {
+  background-image:
+    radial-gradient(60rem 60rem at 12% -10%, rgba(74, 127, 212, 0.12), transparent 60%),
+    radial-gradient(48rem 48rem at 100% 0%, rgba(247, 204, 7, 0.06), transparent 55%);
+}
+
+/* Lighten the blue used as TEXT in the rendered preview for dark contrast. */
+.dark .prose-preview h2 { color: var(--color-pit-blue-light); }
+.dark .prose-preview a { color: var(--color-pit-blue-light); }
+.dark .prose-preview a:hover { color: #b9d4fb; }
+.dark .prose-preview thead th,
+.dark .prose-preview tr:first-child td {
+  background: color-mix(in srgb, var(--color-pit-blue) 22%, transparent);
+}
+
 /* ---- Motion ----------------------------------------------------------- */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(12px); }
@@ -62,6 +98,18 @@ body {
   border-top-color: var(--color-pit-blue);
   border-radius: 9999px;
   animation: spin 0.7s linear infinite;
+}
+
+/* Inline Ionicons (rendered by <Icon>): size to 1em, inherit currentColor. */
+.pit-icon {
+  display: inline-flex;
+  line-height: 0;
+  flex: none;
+}
+.pit-icon > svg {
+  width: 1em;
+  height: 1em;
+  display: block;
 }
 
 /* ---- Rendered preview typography -------------------------------------- *
