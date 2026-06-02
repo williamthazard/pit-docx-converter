@@ -100,19 +100,26 @@ body {
   animation: spin 0.7s linear infinite;
 }
 
-/* Ionicons rendered by <Icon> as a mask painted with the current text color. */
+/* Inline Ionicons rendered by <Icon>: size to 1em and force outline paint in
+ * the current text color (overrides the SVG's own fill/stroke attributes). */
 .pit-icon {
-  display: inline-block;
+  display: inline-flex;
   flex: none;
+  line-height: 0;
+}
+.pit-icon svg {
   width: 1em;
   height: 1em;
-  background-color: currentColor;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
+  display: block;
+}
+/* Ionicons' JS exports paint via CSS classes (.ionicon-fill-none /
+ * .ionicon-stroke-width) that the <ion-icon> web component supplies. We don't
+ * use that component, so supply the paint ourselves. All Ionicons share a
+ * 0 0 512 512 viewBox, so stroke-width: 32 is the standard outline weight. */
+.pit-icon svg * {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 32px;
 }
 
 /* ---- Rendered preview typography -------------------------------------- *

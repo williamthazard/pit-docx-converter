@@ -1,11 +1,9 @@
 /*
- * Renders an Ionicons icon as a CSS mask painted with the current text color.
- *
- * Icons imported from 'ionicons/icons' are `data:image/svg+xml;utf8,<svg …>`
- * strings. We use the SVG as a mask and fill the element with
- * `background-color: currentColor`, so the glyph adopts the surrounding text
- * color (white on the blue header, navy on the yellow button, …) and sizes to
- * 1em. Masking avoids the fill/stroke pitfalls of inlining the SVG directly.
+ * Renders an Ionicons icon as inline SVG. Icons imported from 'ionicons/icons'
+ * are `data:image/svg+xml;utf8,<svg …>` strings; we strip the data-URI prefix
+ * and inline the markup. The paint is forced in CSS (.pit-icon svg *) to
+ * fill:none / stroke:currentColor, so every glyph renders as a proper outline
+ * in the current text color regardless of how the SVG's own attributes parse.
  */
 interface IconProps {
   /** An import from 'ionicons/icons', e.g. cloudUploadOutline. */
@@ -17,20 +15,16 @@ interface IconProps {
 
 const DATA_URI_PREFIX = /^data:image\/svg\+xml(?:;[^,]*)?,/
 
-function maskUrl(icon: string): string {
-  const markup = icon.replace(DATA_URI_PREFIX, '')
-  return `url("data:image/svg+xml,${encodeURIComponent(markup)}")`
-}
-
 export function Icon({ icon, className, label }: IconProps) {
-  const url = maskUrl(icon)
+  const markup = icon.replace(DATA_URI_PREFIX, '')
   return (
     <span
       className={`pit-icon ${className ?? ''}`}
       role={label ? 'img' : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
-      style={{ maskImage: url, WebkitMaskImage: url }}
+      // Trusted, bundled Ionicons asset (not user input) — safe to inline.
+      dangerouslySetInnerHTML={{ __html: markup }}
     />
   )
 }
