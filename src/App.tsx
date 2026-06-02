@@ -35,52 +35,72 @@ function App() {
   const hasResult = result !== null
 
   return (
-    <div className="min-h-screen">
-      <header className="border-b-4 border-pit-yellow bg-pit-card">
+    <div className="flex min-h-screen flex-col">
+      <header className="border-b border-pit-line bg-white/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-6 py-4">
           <img
             src={`${import.meta.env.BASE_URL}PIT_logo_blue.png`}
             alt="Pennsylvania Institute of Technology"
-            className="h-12 w-auto"
+            className="h-11 w-auto"
           />
-          <div className="border-l border-black/10 pl-4">
-            <h1 className="font-heading text-xl text-pit-blue">Docx → Canvas HTML</h1>
-            <p className="text-sm text-pit-grey-light">
-              Turn a Word document into clean HTML for Canvas
-            </p>
+          <div className="border-l border-pit-line pl-4">
+            <h1 className="font-heading text-xl leading-tight text-pit-ink">
+              Docx <span className="text-pit-blue">→</span> Canvas HTML
+            </h1>
+            <p className="text-sm text-pit-grey-light">Turn a Word document into clean HTML for Canvas</p>
           </div>
         </div>
+        <div className="h-[3px] bg-pit-yellow" />
       </header>
 
-      <main className="mx-auto max-w-6xl p-6">
-        <div className={hasResult ? 'grid gap-6 md:grid-cols-[minmax(0,35%)_minmax(0,1fr)]' : 'mx-auto max-w-xl'}>
-          <div className="flex flex-col gap-4">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">
+        <div
+          className={
+            hasResult
+              ? 'grid gap-6 md:grid-cols-[minmax(0,34%)_minmax(0,1fr)] md:items-start'
+              : 'mx-auto max-w-xl'
+          }
+        >
+          <div className="flex animate-fade-up flex-col gap-4">
             <Dropzone onFile={handleFile} fileName={fileName} />
 
-            {busy && <p className="text-sm text-pit-grey-light">Converting…</p>}
+            {busy && (
+              <div className="flex items-center justify-center gap-2 text-sm text-pit-grey-light">
+                <span className="spinner" aria-hidden="true" />
+                Converting…
+              </div>
+            )}
 
             {error && (
-              <div className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">
-                <p className="font-semibold">{error.message}</p>
-                {error.guidance && <p className="mt-1">{error.guidance}</p>}
+              <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-800">
+                <ion-icon name="warning-outline" className="mt-0.5 shrink-0 text-base" aria-hidden="true" />
+                <div>
+                  <p className="font-semibold">{error.message}</p>
+                  {error.guidance && <p className="mt-0.5 text-red-700">{error.guidance}</p>}
+                </div>
               </div>
             )}
 
             {hasResult && (
-              <>
+              <div className="flex flex-col gap-3 rounded-2xl border border-pit-line bg-pit-card p-4 shadow-sm">
+                <p className="text-xs font-semibold tracking-wider text-pit-grey-light uppercase">Export</p>
                 <ExportBar html={result.html} fileName={fileName} />
                 <ConversionNotes notes={result.notes} warnings={result.warnings} />
-              </>
+              </div>
             )}
           </div>
 
           {hasResult && (
-            <div className="min-h-[60vh]">
+            <div className="min-h-[60vh] animate-fade-up md:[animation-delay:90ms]">
               <PreviewPane html={result.html} />
             </div>
           )}
         </div>
       </main>
+
+      <footer className="mx-auto w-full max-w-6xl px-6 pt-2 pb-8 text-center text-xs text-pit-grey-light">
+        Pennsylvania Institute of Technology · Files are converted locally and never uploaded.
+      </footer>
     </div>
   )
 }
