@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { ACCEPTED_EXTENSIONS } from '../lib/convert'
 import { Icon } from './Icon'
 import { cloudUploadOutline, checkmarkCircleOutline } from '../icons'
@@ -9,63 +9,45 @@ interface DropzoneProps {
 }
 
 export function Dropzone({ onFile, fileName }: DropzoneProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
   const [dragging, setDragging] = useState(false)
 
   function handleFiles(files: FileList | null) {
     if (files && files.length > 0) onFile(files[0])
   }
 
-  function openPicker() {
-    inputRef.current?.click()
-  }
-
+  // The whole zone is a <label> wrapping the file input: clicking anywhere
+  // opens the native file dialog with no JS (so Safari can't refuse a
+  // programmatic .click()), and the focusable sr-only input keeps it
+  // keyboard-operable (Tab to focus → the label shows a focus ring → Enter
+  // opens the dialog). Drag-and-drop is handled on the label.
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      aria-label={
-        fileName
-          ? `Loaded ${fileName}. Activate to choose a different file.`
-          : 'Choose or drop a .docx, .txt, or .pdf file to convert'
-      }
-      onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
+    <label
+      onDragOver={(e) => {
+        e.preventDefault()
+        setDragging(true)
+      }}
       onDragLeave={() => setDragging(false)}
       onDrop={(e) => {
         e.preventDefault()
         setDragging(false)
         handleFiles(e.dataTransfer.files)
       }}
-      onClick={openPicker}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault()
-          openPicker()
-        }
-      }}
-      className={`group relative cursor-pointer overflow-hidden rounded-2xl border-2 border-dashed px-6 py-10 text-center outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-pit-blue focus-visible:ring-offset-2 focus-visible:ring-offset-pit-bg ${
+      className={`group relative block cursor-pointer overflow-hidden rounded-2xl border-2 border-dashed px-6 py-10 text-center transition-all duration-200 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-pit-blue has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-pit-bg ${
         dragging
           ? 'scale-[1.01] border-pit-blue bg-pit-blue/[0.06] shadow-lg shadow-pit-blue/10'
           : 'border-pit-blue/35 bg-pit-card/70 hover:border-pit-blue hover:bg-pit-card hover:shadow-md hover:shadow-pit-blue/5'
       }`}
     >
       <input
-        ref={inputRef}
         data-testid="file-input"
         type="file"
         accept={ACCEPTED_EXTENSIONS.join(',')}
-        // Visually hidden but NOT display:none — Safari refuses a programmatic
-        // .click() on a display:none file input, which is why clicking did
-        // nothing (drag still worked). tabIndex -1 keeps it out of the tab
-        // order since the wrapper is the focusable control.
+        aria-label={
+          fileName
+            ? `Loaded ${fileName}. Choose a different file.`
+            : 'Choose or drop a .docx, .txt, or .pdf file to convert'
+        }
         className="sr-only"
-        tabIndex={-1}
-        // The wrapper (role="button") exposes the action; hide the raw input
-        // from assistive tech to avoid a redundant nested control.
-        aria-hidden="true"
-        // Stop the programmatic click() (fired by the container's onClick) from
-        // bubbling back to the container — avoids a re-entrant click loop.
-        onClick={(e) => e.stopPropagation()}
         onChange={(e) => {
           handleFiles(e.target.files)
           // Reset so re-selecting the same filename still fires a change event.
@@ -98,7 +80,7 @@ export function Dropzone({ onFile, fileName }: DropzoneProps) {
             {ACCEPTED_EXTENSIONS.map((ext) => (
               <span
                 key={ext}
-                className="rounded-full border border-pit-line bg-pit-card px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-pit-grey-light"
+                className="rounded-full border border-pit-line bg-pit-card px-2.5 py-0.5 text-xs font-semibold tracking-wide text-pit-grey-light uppercase"
               >
                 {ext.replace('.', '')}
               </span>
@@ -106,6 +88,6 @@ export function Dropzone({ onFile, fileName }: DropzoneProps) {
           </div>
         </>
       )}
-    </div>
+    </label>
   )
 }

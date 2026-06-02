@@ -1,11 +1,11 @@
 /*
- * Renders an Ionicons icon as inline SVG. Icons imported from 'ionicons/icons'
- * are `data:image/svg+xml;utf8,<svg …>` strings whose paths use
- * stroke="currentColor" and a viewBox — so inlining lets the glyph inherit the
- * current text color and size to 1em (set via a text-size class on the icon).
+ * Renders an Ionicons icon as a CSS mask painted with the current text color.
  *
- * We render the web component's SVG directly instead of using <ion-icon>, whose
- * Stencil renderer fails to mount under this Vite + React 19 setup.
+ * Icons imported from 'ionicons/icons' are `data:image/svg+xml;utf8,<svg …>`
+ * strings. We use the SVG as a mask and fill the element with
+ * `background-color: currentColor`, so the glyph adopts the surrounding text
+ * color (white on the blue header, navy on the yellow button, …) and sizes to
+ * 1em. Masking avoids the fill/stroke pitfalls of inlining the SVG directly.
  */
 interface IconProps {
   /** An import from 'ionicons/icons', e.g. cloudUploadOutline. */
@@ -15,18 +15,22 @@ interface IconProps {
   label?: string
 }
 
-const DATA_URI_PREFIX = 'data:image/svg+xml;utf8,'
+const DATA_URI_PREFIX = /^data:image\/svg\+xml(?:;[^,]*)?,/
+
+function maskUrl(icon: string): string {
+  const markup = icon.replace(DATA_URI_PREFIX, '')
+  return `url("data:image/svg+xml,${encodeURIComponent(markup)}")`
+}
 
 export function Icon({ icon, className, label }: IconProps) {
-  const markup = icon.startsWith(DATA_URI_PREFIX) ? icon.slice(DATA_URI_PREFIX.length) : icon
+  const url = maskUrl(icon)
   return (
     <span
       className={`pit-icon ${className ?? ''}`}
       role={label ? 'img' : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
-      // Trusted, bundled Ionicons asset (not user input) — safe to inline.
-      dangerouslySetInnerHTML={{ __html: markup }}
+      style={{ maskImage: url, WebkitMaskImage: url }}
     />
   )
 }
