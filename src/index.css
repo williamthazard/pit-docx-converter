@@ -131,6 +131,7 @@ body {
   line-height: 1.65;
   color: var(--color-pit-grey);
   font-size: 0.975rem;
+  overflow-wrap: break-word;
 }
 .prose-preview > :first-child { margin-top: 0; }
 .prose-preview h1 {

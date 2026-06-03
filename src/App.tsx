@@ -41,7 +41,7 @@ function App() {
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 border-b border-white/15 bg-pit-blue/90 shadow-md backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-6 py-3.5">
-          <a href="https://pit.edu" target="_blank" rel="noopener noreferrer">
+          <a href="https://pit.edu" target="_blank" rel="noopener noreferrer" className="shrink-0">
             <img
               src={`${import.meta.env.BASE_URL}PIT_logo_blue.png`}
               alt="Pennsylvania Institute of Technology"
@@ -50,13 +50,13 @@ function App() {
               style={{ filter: 'brightness(0) invert(1)' }}
             />
           </a>
-          <div className="border-l border-white/25 pl-3">
+          <div className="min-w-0 border-l border-white/25 pl-3">
             <h1 className="font-heading text-xl leading-tight text-white">
               Docx <span className="text-pit-yellow">→</span> HTML
             </h1>
             <p className="text-sm text-blue-100/80">Turn a Word document into clean HTML</p>
           </div>
-          <div className="ml-auto">
+          <div className="ml-auto shrink-0">
             <ThemeMenu />
           </div>
         </div>
@@ -66,11 +66,11 @@ function App() {
         <div
           className={
             hasResult
-              ? 'grid gap-6 md:grid-cols-[minmax(0,34%)_minmax(0,1fr)] md:items-start'
+              ? 'grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,34%)_minmax(0,1fr)] md:items-start'
               : 'mx-auto max-w-xl'
           }
         >
-          <div className="flex animate-fade-up flex-col gap-4">
+          <div className="flex min-w-0 animate-fade-up flex-col gap-4">
             <Dropzone onFile={handleFile} fileName={fileName} />
 
             {busy && (
@@ -100,7 +100,7 @@ function App() {
           </div>
 
           {hasResult && (
-            <div className="min-h-[60vh] animate-fade-up md:[animation-delay:90ms]">
+            <div className="min-w-0 min-h-[60vh] animate-fade-up md:[animation-delay:90ms]">
               <PreviewPane html={result.html} />
             </div>
           )}

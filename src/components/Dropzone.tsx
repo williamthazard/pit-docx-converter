@@ -68,7 +68,7 @@ export function Dropzone({ onFile, fileName }: DropzoneProps) {
 
         {fileName ? (
           <>
-            <p className="font-heading text-lg text-pit-ink">
+            <p className="font-heading text-lg break-words text-pit-ink">
               <span className="text-pit-grey-light">Loaded:</span> {fileName}
             </p>
             <p className="mt-1 text-sm text-pit-grey-light">Click or drop another file to replace</p>
