@@ -54,7 +54,7 @@ function App() {
             <h1 className="font-heading text-xl leading-tight text-white">
               Docx <span className="text-pit-yellow">→</span> HTML
             </h1>
-            <p className="text-sm text-blue-100/80">Turn a Word document into clean HTML</p>
+            <p className="text-sm text-blue-100/80">Turn a Word document into HTML</p>
           </div>
           <div className="ml-auto shrink-0">
             <ThemeMenu />
