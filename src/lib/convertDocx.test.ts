@@ -14,14 +14,14 @@ function fixtureArrayBuffer(): ArrayBuffer {
 describe('convertDocx', () => {
   it('maps Title to <h1> and Heading 1 to <h2> (offset)', async () => {
     const r = await convertDocx(fixtureArrayBuffer())
-    expect(r.html).toContain('<h1>Capstone Syllabus</h1>')
-    expect(r.html).toContain('<h2>Course Overview</h2>')
+    expect(r.html).toMatch(/<h1[^>]*>Capstone Syllabus<\/h1>/)
+    expect(r.html).toMatch(/<h2[^>]*>Course Overview<\/h2>/)
   })
 
   it('preserves tables, lists, and hyperlinks', async () => {
     const r = await convertDocx(fixtureArrayBuffer())
-    expect(r.html).toContain('<table>')
-    expect(r.html).toContain('<li>First bullet</li>')
+    expect(r.html).toContain('<table')
+    expect(r.html).toMatch(/<li[^>]*>First bullet<\/li>/)
     expect(r.html).toContain('href="https://qti.uiw.edu/"')
   })
 
@@ -29,5 +29,14 @@ describe('convertDocx', () => {
     const r = await convertDocx(fixtureArrayBuffer())
     expect(r.html).not.toContain('<img')
     expect(r.notes.some((n) => /image/i.test(n) && n.includes('1'))).toBe(true)
+  })
+
+  it('inlines Canvas-ready styles and pretty-prints the output', async () => {
+    const r = await convertDocx(fixtureArrayBuffer())
+    // Inline styling carried onto elements (the only styling Canvas keeps).
+    expect(r.html).toMatch(/<h2[^>]*style="[^"]*color: #3161ac/)
+    expect(r.html).toMatch(/<table[^>]*style="[^"]*border-collapse: collapse/)
+    // Pretty-printed: real newlines between blocks.
+    expect(r.html).toContain('\n')
   })
 })

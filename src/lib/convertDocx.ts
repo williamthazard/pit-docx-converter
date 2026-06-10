@@ -1,5 +1,6 @@
 import type { ConversionResult } from './types'
 import { cleanHtml } from './cleanHtml'
+import { toCanvasHtml } from './canvasHtml'
 
 const STYLE_MAP = [
   "p[style-name='Title'] => h1:fresh",
@@ -34,5 +35,7 @@ export async function convertDocx(data: ArrayBuffer): Promise<ConversionResult> 
     notes.push(`${n} image${n === 1 ? '' : 's'} removed — re-add ${n === 1 ? 'it' : 'them'} in Canvas.`)
   }
 
-  return { html: cleaned.html, notes, warnings: [] }
+  // Inline the styling (Canvas only keeps inline CSS) and pretty-print.
+  const html = toCanvasHtml(cleaned.html)
+  return { html, notes, warnings: [] }
 }

@@ -61,15 +61,6 @@ body {
     radial-gradient(48rem 48rem at 100% 0%, rgba(247, 204, 7, 0.06), transparent 55%);
 }
 
-/* Lighten the blue used as TEXT in the rendered preview for dark contrast. */
-.dark .prose-preview h2 { color: var(--color-pit-blue-light); }
-.dark .prose-preview a { color: var(--color-pit-blue-light); }
-.dark .prose-preview a:hover { color: #b9d4fb; }
-.dark .prose-preview thead th,
-.dark .prose-preview tr:first-child td {
-  background: color-mix(in srgb, var(--color-pit-blue) 22%, transparent);
-}
-
 /* ---- Motion ----------------------------------------------------------- */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(12px); }
@@ -122,64 +113,18 @@ body {
   stroke-width: 32px;
 }
 
-/* ---- Rendered preview typography -------------------------------------- *
- * Tailwind Preflight resets headings/lists/tables to unstyled. The preview
- * pane renders raw converted HTML, so re-apply sensible typographic defaults
- * scoped to .prose-preview only — this affects the preview, never app chrome.
+/* ---- Rendered preview ------------------------------------------------- *
+ * The preview renders the SAME inline-styled HTML that gets pasted into Canvas
+ * (WYSIWYG), on a white sheet. Element styling comes from those inline styles
+ * (see lib/canvasHtml.ts); here we set only the base typography they inherit.
  */
 .prose-preview {
-  line-height: 1.65;
-  color: var(--color-pit-grey);
-  font-size: 0.975rem;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #1a1a1a;
   overflow-wrap: break-word;
 }
-.prose-preview > :first-child { margin-top: 0; }
-.prose-preview h1 {
-  font-family: var(--font-heading);
-  font-size: 1.6rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--color-pit-ink);
-  margin: 1.3rem 0 0.6rem;
+.prose-preview > :first-child {
+  margin-top: 0;
 }
-.prose-preview h2 {
-  font-family: var(--font-heading);
-  font-size: 1.3rem;
-  font-weight: 700;
-  line-height: 1.25;
-  color: var(--color-pit-blue);
-  margin: 1.15rem 0 0.5rem;
-  padding-bottom: 0.3rem;
-  border-bottom: 1px solid var(--color-pit-line);
-}
-.prose-preview h3 { font-size: 1.1rem; font-weight: 700; color: var(--color-pit-ink); margin: 1rem 0 0.4rem; }
-.prose-preview h4 { font-size: 1rem; font-weight: 700; color: var(--color-pit-ink); margin: 0.9rem 0 0.4rem; }
-.prose-preview p { margin: 0.6rem 0; }
-.prose-preview a {
-  color: var(--color-pit-blue);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 1px;
-}
-.prose-preview a:hover { color: var(--color-pit-blue-dark); }
-.prose-preview ul,
-.prose-preview ol { margin: 0.6rem 0; padding-left: 1.5rem; }
-.prose-preview ul { list-style: disc; }
-.prose-preview ol { list-style: decimal; }
-.prose-preview li { margin: 0.25rem 0; }
-.prose-preview table {
-  border-collapse: collapse;
-  margin: 0.9rem 0;
-  width: 100%;
-  font-size: 0.9rem;
-}
-.prose-preview thead th,
-.prose-preview tr:first-child td { background: color-mix(in srgb, var(--color-pit-blue) 8%, white); }
-.prose-preview th,
-.prose-preview td {
-  border: 1px solid var(--color-pit-line);
-  padding: 0.45rem 0.7rem;
-  text-align: left;
-  vertical-align: top;
-}
-.prose-preview td > p:only-child { margin: 0; }
