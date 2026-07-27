@@ -24,6 +24,7 @@ const STYLE: Record<string, string> = {
   td: "border: 1px solid #d7dbe3; padding: 6px 10px; text-align: left; vertical-align: top;",
   th: "border: 1px solid #d7dbe3; padding: 6px 10px; text-align: left; vertical-align: top; background: #eef2fb; font-weight: 700;",
   blockquote: "margin: 12px 0; padding: 8px 14px; border-left: 3px solid #d7dbe3; color: #555555;",
+  caption: "font-family: Georgia, 'Times New Roman', serif; font-size: 14px; font-weight: 700; color: #15294a; text-align: center; padding: 8px 0 0 0; caption-side: bottom;",
 }
 
 // Header styling reused for a table's first row (Word tables come through as

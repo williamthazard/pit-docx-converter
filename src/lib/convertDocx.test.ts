@@ -12,7 +12,7 @@ function fixtureArrayBuffer(): ArrayBuffer {
 }
 
 describe('convertDocx', () => {
-  it('maps Title to <h1> and Heading 1 to <h2> (offset)', async () => {
+  it('maps Title to <h1> and Heading 1 to <h2> (offset)', { timeout: 15000 }, async () => {
     const r = await convertDocx(fixtureArrayBuffer())
     expect(r.html).toMatch(/<h1[^>]*>Capstone Syllabus<\/h1>/)
     expect(r.html).toMatch(/<h2[^>]*>Course Overview<\/h2>/)

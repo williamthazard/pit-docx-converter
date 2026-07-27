@@ -43,4 +43,37 @@ describe('cleanHtml', () => {
     const out = cleanHtml('<a href="javascript:alert(1)">x</a>')
     expect(out.html).not.toContain('javascript:')
   })
+
+  it('enforces one H1 per page rule by demoting subsequent <h1> tags to <h2>', () => {
+    const input = '<h1>Title One</h1><p>Text</p><h1>Title Two</h1>'
+    const out = cleanHtml(input)
+    expect(out.html).toContain('<h1>Title One</h1>')
+    expect(out.html).toContain('<h2>Title Two</h2>')
+    expect(out.html).not.toContain('<h1>Title Two</h1>')
+  })
+
+  it('converts bullet pseudo-lists into <ul> lists', () => {
+    const input = '<p>• First item</p><p>• Second item</p>'
+    const out = cleanHtml(input)
+    expect(out.html).toContain('<ul><li>First item</li><li>Second item</li></ul>')
+  })
+
+  it('converts numbered pseudo-lists into <ol> lists', () => {
+    const input = '<p>1. First item</p><p>2. Second item</p>'
+    const out = cleanHtml(input)
+    expect(out.html).toContain('<ol><li>First item</li><li>Second item</li></ol>')
+  })
+
+  it('fixes nested list structure and removes duplicate bullet markers', () => {
+    const input = '<ul><li>• Bullet Item</li><ul><li>Sub item</li></ul></ul>'
+    const out = cleanHtml(input)
+    expect(out.html).not.toContain('• Bullet')
+    expect(out.html).toContain('<li>Bullet Item<ul><li>Sub item</li></ul></li>')
+  })
+
+  it('ensures every table has an accessible <caption> element', () => {
+    const input = '<p>Course Schedule</p><table><tr><td>Week 1</td></tr></table>'
+    const out = cleanHtml(input)
+    expect(out.html).toContain('<caption>Course Schedule</caption>')
+  })
 })
